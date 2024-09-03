@@ -1,6 +1,6 @@
 NCCS
 ====
-
+```
 conda create -n env-invest -c conda-forge "python=3.11" natcap.invest
 conda activate env-invest
 
@@ -15,6 +15,7 @@ pip install natcap.invest
 (pip install natcap.invest --upgrade-strategy=only-if-needed)
 invest list
 invest run --help
+```
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
