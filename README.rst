@@ -1,23 +1,20 @@
 NCCS
 ====
-```console
-conda create -n env-invest -c conda-forge "python=3.11" natcap.invest
-conda activate env-invest
-```
-```console
-py --version
-(py -m ensurepip --default-pip)
-py -m pip --version
-pip install gdal==3.3.0
-gdalinfo --version
-```
-```console
-py -m pip install --upgrade pip setuptools wheel
-pip install natcap.invest
-(pip install natcap.invest --upgrade-strategy=only-if-needed)
-invest list
-invest run --help
-```
+.. code-block:: console
+  conda create -n env-invest -c conda-forge "python=3.11" natcap.invest
+  conda activate env-invest
+
+  py --version
+  (py -m ensurepip --default-pip)
+  py -m pip --version
+  pip install gdal==3.3.0
+  gdalinfo --version
+
+  py -m pip install --upgrade pip setuptools wheel
+  pip install natcap.invest
+  (pip install natcap.invest --upgrade-strategy=only-if-needed)
+  invest list
+  invest run --help
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
