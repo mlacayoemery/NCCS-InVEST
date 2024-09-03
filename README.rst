@@ -1,6 +1,7 @@
 NCCS
 ====
 #. Install Anaconda
+#. Setup development environment
 
 .. code-block:: bash
 
