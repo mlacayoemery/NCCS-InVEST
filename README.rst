@@ -1,20 +1,26 @@
 NCCS
 ====
+#. Install Anaconda
 
 .. code-block:: bash
 
-   conda create -n env-invest -c conda-forge "python=3.11" natcap.invest
+   conda create -n env-invest -c conda-forge "python=3.11"
    conda activate env-invest
 
-   py --version
-   (py -m ensurepip --default-pip)
-   py -m pip --version
-   pip install gdal==3.3.0
+   python --version
+   (python -m ensurepip --default-pip)
+   python -m pip --version
+
+   conda install -c conda-forge gdal "numpy<2"
+   
    gdalinfo --version
 
-   py -m pip install --upgrade pip setuptools wheel
-   pip install natcap.invest
-   (pip install natcap.invest --upgrade-strategy=only-if-needed)
+   python -m pip install --upgrade pip setuptools wheel
+   pip install -r requirements-dev.txt
+   pip install .
+
+  (pip install natcap.invest --upgrade-strategy=only-if-needed)
+
    invest list
    invest run --help
 
