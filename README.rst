@@ -1,6 +1,6 @@
 NCCS
 ====
-```
+```console
 conda create -n env-invest -c conda-forge "python=3.11" natcap.invest
 conda activate env-invest
 
