@@ -12,3 +12,4 @@ src/natcap/invest/recreation/out_of_core_quadtree.cpp
 src/natcap/invest/scenic_quality/viewshed.cpp
 src/natcap/invest/sdr/sdr_core.cpp
 src/natcap/invest/seasonal_water_yield/seasonal_water_yield_core.cpp
+data/sample/output/
