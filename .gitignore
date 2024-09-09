@@ -1,0 +1,14 @@
+.flake8
+.github/
+.readthedocs.yml
+.readthedocs_environment.yml
+build/
+src/natcap.invest.egg-info/
+src/natcap/invest/delineateit/delineateit_core.cpp
+src/natcap/invest/internationalization/locales/es/LC_MESSAGES/messages.mo
+src/natcap/invest/internationalization/locales/zh/LC_MESSAGES/messages.mo
+src/natcap/invest/ndr/ndr_core.cpp
+src/natcap/invest/recreation/out_of_core_quadtree.cpp
+src/natcap/invest/scenic_quality/viewshed.cpp
+src/natcap/invest/sdr/sdr_core.cpp
+src/natcap/invest/seasonal_water_yield/seasonal_water_yield_core.cpp
