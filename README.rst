@@ -25,6 +25,11 @@ NCCS
    invest list
    invest run --help
 
+#. Activate development environment
+
+.. code-block:: bash
+
+   conda activate env-invest
 
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
