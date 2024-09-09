@@ -25,7 +25,7 @@ NCCS
    invest list
    invest run --help
 
-#. Activate development environment
+3. Activate development environment
 
 .. code-block:: bash
 
