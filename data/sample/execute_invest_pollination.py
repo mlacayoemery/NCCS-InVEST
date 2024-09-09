@@ -18,7 +18,7 @@ handler.setFormatter(formatter)
 logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 args = {
-    'farm_vector_path': os.path.join(base_path, 'pollination', 'farms.shp'),
+    'farm_vector_path': '', #os.path.join(base_path, 'pollination', 'farms.shp'),
     'guild_table_path': os.path.join(base_path, 'pollination', 'guild_table.csv'),
     'landcover_biophysical_table_path': os.path.join(base_path, 'pollination', 'landcover_biophysical_table.csv'),
     'landcover_raster_path': os.path.join(base_path,'pollination', 'landcover.tif'),
