@@ -31,6 +31,12 @@ NCCS
 
    conda activate env-invest
 
+4. Deactivate development environment
+
+.. code-block:: bash
+
+   conda deactivate
+
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
