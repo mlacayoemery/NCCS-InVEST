@@ -531,6 +531,7 @@ def execute(args):
         **MODEL_SPEC['args']['guild_table_path'])
     _SPECIES_ABUNDANCE_FILE_PATTERN = os.path.join("pollinator_abundance_%s_%s.tif")
     missing_species_abundance_list = []
+    scenario_variables['species_abundance_path']={}
     for season in scenario_variables['season_list']:
         for species_name in guild_to_species_df.index:
             species_abundance_raster_path = os.path.join(
@@ -538,6 +539,8 @@ def execute(args):
                 _SPECIES_ABUNDANCE_FILE_PATTERN % (species_name, season))
             if not os.path.exists(species_abundance_raster_path):
                 missing_species_abundance_list.append("%s_%s" % (species_name, season))
+            else:
+                scenario_variables['species_abundance_path'][species_name]=species_abundance_raster_path
     if missing_species_abundance_list:
         raise ValueError(
             "The following species names and seaspns were provided in %s but no such "
@@ -831,7 +834,10 @@ def execute(args):
             args=(
                 scenario_variables['habitat_nesting_index_path'][species],
                 floral_resources_index_path,
-                scenario_variables['species_abundance'][species],
+##NCCS-START##
+##                scenario_variables['species_abundance'][species],
+                scenario_variables['species_abundance_path'][species],                
+##NCCS-END##
                 pollinator_supply_index_path),
             dependent_task_list=[
                 floral_resources_task, habitat_nesting_tasks[species]],
@@ -1466,29 +1472,54 @@ def _multiply_by_scalar(raster_path, scalar, target_path):
         target_nodata=_INDEX_NODATA,
     )
 
-
+##NCCS-START##
+##def _calculate_pollinator_supply_index(
+##        habitat_nesting_suitability_path, floral_resources_path,
+##        species_abundance, target_path):
+##    """Calculate pollinator supply index..
+##
+##    Args:
+##        habitat_nesting_suitability_path (str): path to habitat nesting
+##            suitability raster
+##        floral_resources_path (str): path to floral resources raster
+##        species_abundance (float): species abundance value
+##        target_path (str): path to write out result raster
+##
+##    Returns:
+##        None.
+##    """
+##    pygeoprocessing.raster_map(
+##        op=lambda f_r, h_n: species_abundance * f_r * h_n,
+##        rasters=[habitat_nesting_suitability_path, floral_resources_path],
+##        target_path=target_path,
+##        target_nodata=_INDEX_NODATA
+##    )
+    
 def _calculate_pollinator_supply_index(
         habitat_nesting_suitability_path, floral_resources_path,
-        species_abundance, target_path):
+        species_abundance_path, target_path):
     """Calculate pollinator supply index..
 
     Args:
         habitat_nesting_suitability_path (str): path to habitat nesting
             suitability raster
         floral_resources_path (str): path to floral resources raster
-        species_abundance (float): species abundance value
+        species_abundance_path (str): path to species abundance raster
         target_path (str): path to write out result raster
 
     Returns:
         None.
     """
     pygeoprocessing.raster_map(
-        op=lambda f_r, h_n: species_abundance * f_r * h_n,
-        rasters=[habitat_nesting_suitability_path, floral_resources_path],
+        op=lambda f_r, h_n, s_a: f_r * h_n * s_a,
+        rasters=[habitat_nesting_suitability_path,
+                 floral_resources_path,
+                 species_abundance_path],
         target_path=target_path,
         target_nodata=_INDEX_NODATA
     )
 
+##NCCS-END##
 
 @validation.invest_validator
 def validate(args, limit_to=None):
