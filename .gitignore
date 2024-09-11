@@ -14,3 +14,4 @@ src/natcap/invest/sdr/sdr_core.cpp
 src/natcap/invest/seasonal_water_yield/seasonal_water_yield_core.cpp
 data/sample/output/
 data/sample/pollination/landcover.tif.aux.xml
+data/sample/pollination/pollinator_abundance/pollinator_abundance*
