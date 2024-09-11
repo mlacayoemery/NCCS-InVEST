@@ -524,7 +524,7 @@ def execute(args):
     # if any of the inputs are malformed.
     scenario_variables = _parse_scenario_variables(args)
 
-##NCCS##
+##NCCS-START##
     #verify that all species have supplied species abundance rasters
     guild_to_species_df = validation.get_validated_dataframe(
         args['guild_table_path'],
@@ -543,7 +543,7 @@ def execute(args):
             "The following species names and seaspns were provided in %s but no such "
             "species abundance rasters exist for this model: %s" % (
                 args['guild_table_path'], missing_species_abundance_list))
-
+##NCCS-END##
     
     landcover_raster_info = pygeoprocessing.get_raster_info(
         args['landcover_raster_path'])
@@ -863,7 +863,7 @@ def execute(args):
             foraged_flowers_index_path = (
                 scenario_variables['foraged_flowers_index_path'][
                     (species, season)])
-##NCCS##            
+##NCCS-START##
 ##            pollinator_abundance_path = os.path.join(
 ##                output_dir, _POLLINATOR_ABUNDANCE_FILE_PATTERN % (
 ##                    species, season, file_suffix))
@@ -890,7 +890,8 @@ def execute(args):
                 os.path.join(
                     args['pollinator_abundance_dir'],
                     _SPECIES_ABUNDANCE_FILE_PATTERN % (species, season)))
-
+##NCCS-END##
+            
     # calculate total abundance of all pollinators for each season
     total_pollinator_abundance_task = {}
     for season in scenario_variables['season_list']:
@@ -910,11 +911,12 @@ def execute(args):
                 pollinator_abundance_season_path_band_list, _sum_arrays,
                 total_pollinator_abundance_index_path, gdal.GDT_Float32,
                 _INDEX_NODATA),
-##NCCS##
+##NCCS-START##
 ##            dependent_task_list=[
 ##                pollinator_abundance_task_map[(species, season)]
 ##                for species in scenario_variables['species_list']],
-            dependent_task_list=[],            
+            dependent_task_list=[],
+##NCCS-END##            
             target_path_list=[total_pollinator_abundance_index_path])
 
     # next step is farm vector calculation, if no farms then okay to quit
