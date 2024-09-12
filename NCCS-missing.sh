@@ -1,0 +1,25 @@
+for i in *.tif ; do cp $i "pollinator_abundance_${i/./ }" ; done
+for i in pollinator_abundance*.tif ; do mv "$i" "${i/_glo_ensemble/}" ; done
+missing=("andrena bicolor"
+"andrena carantonica"
+"andrena cineraria"
+"andrena flavipes"
+"andrena haemorrhoa"
+"andrena humilis"
+"andrena minutula"
+"andrena nitida"
+"andrena ovatula"
+"bombus hortorum"
+"bombus hypnorum"
+"bombus lapidarius"
+"bombus pascuorum"
+"bombus pratorum"
+"bombus sylvarum"
+"bombus terrestris"
+"eucera nigrescens"
+"halictus rubicundus"
+"halictus simplex"
+"lasioglossum laticeps"
+"osmia cornuta"
+)
+for i in "${missing[@]}"; do cp "pollinator_abundance_Andrena barbilabris.tif"  "pollinator_abundance_$i.tif"; done
