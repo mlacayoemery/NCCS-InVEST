@@ -1,5 +1,7 @@
-for i in *.tif ; do cp $i "pollinator_abundance_${i/./ }" ; done
+for i in *.tif ; do cp $i "pollinator_abundance_${i,,}" ; done
+for i in pollinator_abundance*.tif ; do mv $i "${i/./ }" ; done
 for i in pollinator_abundance*.tif ; do mv "$i" "${i/_glo_ensemble/}" ; done
+
 missing=("andrena bicolor"
 "andrena carantonica"
 "andrena cineraria"
