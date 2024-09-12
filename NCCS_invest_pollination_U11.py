@@ -23,7 +23,8 @@ args = {
     'landcover_biophysical_table_path': os.path.join(base_path, 'sample', 'pollination_bptable_ds25.csv'),
     'landcover_raster_path': os.path.join(base_path,'sample', 'LU-CH_2018all.tif'),
     'results_suffix': '',
-    'workspace_dir': os.path.join(base_path, 'output')
+    'workspace_dir': os.path.join(base_path, 'output'),
+    'pollinator_abundance_dir': os.path.join(base_path,'sample', 'pollinator_abundance')
 }
 
 if __name__ == '__main__':
