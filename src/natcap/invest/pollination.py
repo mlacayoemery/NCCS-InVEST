@@ -529,21 +529,20 @@ def execute(args):
     guild_to_species_df = validation.get_validated_dataframe(
         args['guild_table_path'],
         **MODEL_SPEC['args']['guild_table_path'])
-    _SPECIES_ABUNDANCE_FILE_PATTERN = os.path.join("pollinator_abundance_%s_%s.tif")
+    _SPECIES_ABUNDANCE_FILE_PATTERN = os.path.join("pollinator_abundance_%s.tif")
     missing_species_abundance_list = []
     scenario_variables['species_abundance_path']={}
-    for season in scenario_variables['season_list']:
-        for species_name in guild_to_species_df.index:
-            species_abundance_raster_path = os.path.join(
-                args['pollinator_abundance_dir'],
-                _SPECIES_ABUNDANCE_FILE_PATTERN % (species_name, season))
-            if not os.path.exists(species_abundance_raster_path):
-                missing_species_abundance_list.append("%s_%s" % (species_name, season))
-            else:
-                scenario_variables['species_abundance_path'][species_name]=species_abundance_raster_path
+    for species_name in guild_to_species_df.index:
+        species_abundance_raster_path = os.path.join(
+            args['pollinator_abundance_dir'],
+            _SPECIES_ABUNDANCE_FILE_PATTERN % species_name)
+        if not os.path.exists(species_abundance_raster_path):
+            missing_species_abundance_list.append("%s" % species_name)
+        else:
+            scenario_variables['species_abundance_path'][species_name]=species_abundance_raster_path
     if missing_species_abundance_list:
         raise ValueError(
-            "The following species names and seaspns were provided in %s but no such "
+            "The following species names were provided in %s but no such "
             "species abundance rasters exist for this model: %s" % (
                 args['guild_table_path'], missing_species_abundance_list))
 ##NCCS-END##
