@@ -535,16 +535,20 @@ def execute(args):
     for species_name in guild_to_species_df.index:
         species_abundance_raster_path = os.path.join(
             args['pollinator_abundance_dir'],
-            _SPECIES_ABUNDANCE_FILE_PATTERN % species_name)
+            _SPECIES_ABUNDANCE_FILE_PATTERN % species_name.lower())
+        LOGGER.info("Checking for existing file %s" % species_abundance_raster_path)
         if not os.path.exists(species_abundance_raster_path):
             missing_species_abundance_list.append("%s" % species_name)
         else:
             scenario_variables['species_abundance_path'][species_name]=species_abundance_raster_path
     if missing_species_abundance_list:
+        missing_species_abundance_list.sort()
         raise ValueError(
             "The following species names were provided in %s but no such "
-            "species abundance rasters exist for this model: %s" % (
-                args['guild_table_path'], missing_species_abundance_list))
+            "species abundance rasters exist in %s: %s" % (
+                args['guild_table_path'],
+                args['pollinator_abundance_dir'],
+                missing_species_abundance_list))
 ##NCCS-END##
     
     landcover_raster_info = pygeoprocessing.get_raster_info(
@@ -891,10 +895,10 @@ def execute(args):
 ##                    target_path_list=[pollinator_abundance_path]))
 ##            pollinator_abundance_path_map[(species, season)] = (
 ##                pollinator_abundance_path)
-            pollinator_abundance_path_map[(species, season)] = (
+            pollinator_abundance_path_map[(species)] = (
                 os.path.join(
                     args['pollinator_abundance_dir'],
-                    _SPECIES_ABUNDANCE_FILE_PATTERN % (species, season)))
+                    _SPECIES_ABUNDANCE_FILE_PATTERN % (species)))
 ##NCCS-END##
             
     # calculate total abundance of all pollinators for each season
@@ -906,7 +910,7 @@ def execute(args):
                 season, file_suffix))
 
         pollinator_abundance_season_path_band_list = [
-            (pollinator_abundance_path_map[(species, season)], 1)
+            (pollinator_abundance_path_map[(species)], 1)
             for species in scenario_variables['species_list']]
 
         total_pollinator_abundance_task[season] = task_graph.add_task(
