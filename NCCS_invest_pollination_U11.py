@@ -24,7 +24,7 @@ args = {
     'landcover_raster_path': os.path.join(base_path,'sample', 'LU-CH_2018all.tif'),
     'results_suffix': '',
     'workspace_dir': os.path.join(base_path, 'output'),
-    'pollinator_abundance_dir': os.path.join(base_path,'sample', 'pollinator_abundance')
+    'pollinator_abundance_dir': os.path.join(base_path,'sample', 'valpar_NMDS_apple_presence')
 }
 
 if __name__ == '__main__':
