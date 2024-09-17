@@ -28,7 +28,15 @@ NCCS
 
    conda activate env-invest
 
-4. Deactivate development environment
+4. Run test script
+
+Note: Species abundance rasters must be in named as pollinator_abundance_[species].tif. See pre-formatted NCCS NMDS data: https://drive.google.com/drive/folders/1B-_RKdOOSH9wDz52FIr8-VvgYkySJ3Id
+
+.. code-block:: bash
+
+   python NCCS_invest_pollination_U11.py
+
+5. Deactivate development environment
 
 .. code-block:: bash
 
