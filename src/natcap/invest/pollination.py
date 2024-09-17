@@ -549,10 +549,6 @@ def execute(args):
                 args['guild_table_path'],
                 args['pollinator_abundance_dir'],
                 missing_species_abundance_list))
-##NCCS-END##
-    
-    landcover_raster_info = pygeoprocessing.get_raster_info(
-        args['landcover_raster_path'])
 
     try:
         n_workers = int(args['n_workers'])
@@ -564,6 +560,60 @@ def execute(args):
     task_graph = taskgraph.TaskGraph(
         os.path.join(args['workspace_dir'], 'taskgraph_cache'), n_workers)
 
+
+    #align_and_resize_raster_stack from annual water yield line 614
+    base_raster_path_list = [args['landcover_raster_path']]
+
+    lulc_root, lulc_ext = os.path.splitext(args['landcover_raster_path'])
+    aligned_landcover_raster_path = lulc_root+"_align"+lulc_ext
+    aligned_raster_path_list = [aligned_landcover_raster_path]
+    
+    for species_name in guild_to_species_df.index:
+        species_abundance_path = scenario_variables['species_abundance_path'][species_name]
+        sa_root, sa_ext = os.path.splitext(species_abundance_path)
+
+        base_raster_path_list.append(species_abundance_path)
+
+        aligned_species_abundance_path=sa_root+"_align"+sa_ext
+        aligned_raster_path_list.append(aligned_species_abundance_path)
+        scenario_variables['species_abundance_path'][species_name]=aligned_species_abundance_path
+
+        
+
+    target_pixel_size = pygeoprocessing.get_raster_info(
+        args['landcover_raster_path'])['pixel_size']
+    args['landcover_raster_path'] = aligned_landcover_raster_path
+    
+    align_raster_stack_task = task_graph.add_task(
+        pygeoprocessing.align_and_resize_raster_stack,
+        args=(base_raster_path_list, aligned_raster_path_list,
+              ['near'] * len(base_raster_path_list),
+              target_pixel_size, 'intersection'),
+        kwargs={'raster_align_index': 4},
+                #'base_vector_path_list': [watersheds_path]},
+        target_path_list=aligned_raster_path_list,
+        task_name='align_raster_stack')
+    # Joining now since this task will always be the root node
+    # and it's useful to have the raster info available.
+    align_raster_stack_task.join()
+    
+
+##NCCS-END##
+    
+    landcover_raster_info = pygeoprocessing.get_raster_info(
+        args['landcover_raster_path'])
+##NCCS-START##
+##    try:
+##        n_workers = int(args['n_workers'])
+##    except (KeyError, ValueError, TypeError):
+##        # KeyError when n_workers is not present in args
+##        # ValueError when n_workers is an empty string.
+##        # TypeError when n_workers is None.
+##        n_workers = -1  # Synchronous mode.
+##    task_graph = taskgraph.TaskGraph(
+##        os.path.join(args['workspace_dir'], 'taskgraph_cache'), n_workers)
+##NCCS-END##
+    
     if farm_vector_path is not None:
         # ensure farm vector is in the same projection as the landcover map
         reproject_farm_task = task_graph.add_task(
