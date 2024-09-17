@@ -9,7 +9,6 @@ NCCS
    conda activate env-invest
 
    python --version
-   (python -m ensurepip --default-pip)
    python -m pip --version
 
    conda install -c conda-forge gdal "numpy<2"
@@ -19,8 +18,6 @@ NCCS
    python -m pip install --upgrade pip setuptools wheel
    pip install -r requirements-dev.txt
    pip install .
-
-  (pip install natcap.invest --upgrade-strategy=only-if-needed)
 
    invest list
    invest run --help
