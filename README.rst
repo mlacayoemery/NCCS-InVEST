@@ -39,7 +39,7 @@ Prerequisites
 
    Note: Species abundance rasters must be in named as **pollinator_abundance_[species].tif**. See pre-formatted `NCCS NMDS data <https://drive.google.com/drive/folders/1B-_RKdOOSH9wDz52FIr8-VvgYkySJ3Id>`_.
 
-   Copy data into NCCS/sample
+   *  Copy data into NCCS/sample
 
 .. code-block:: bash
 
