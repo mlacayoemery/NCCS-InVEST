@@ -1,8 +1,11 @@
 NCCS
 ====
-1. Install Anaconda
+Prerequisites
 
-2. Clone NCCS InVEST respository
+*  Install git and `register <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>`_ a SSH key with GitHub
+*  Anaconda 
+
+1. Clone NCCS InVEST respository
 
 .. code-block:: bash
 
@@ -11,7 +14,7 @@ NCCS
    git clone git@github.com:mlacayoemery/NCCS-InVEST.git
    cd NCCS-InVEST
 
-3. Setup development environment
+2. Setup development environment
 
 .. code-block:: bash
 
@@ -32,9 +35,9 @@ NCCS
    invest list
    invest run --help
 
-4. Run test script
+3. Run test script
 
-   Note: Species abundance rasters must be in named as pollinator_abundance_[species].tif. See pre-formatted NCCS NMDS data: https://drive.google.com/drive/folders/1B-_RKdOOSH9wDz52FIr8-VvgYkySJ3Id
+   Note: Species abundance rasters must be in named as **pollinator_abundance_[species].tif**. See pre-formatted `NCCS NMDS data <https://drive.google.com/drive/folders/1B-_RKdOOSH9wDz52FIr8-VvgYkySJ3Id>`_.
 
    Copy data into NCCS/sample
 
@@ -42,7 +45,7 @@ NCCS
 
    python NCCS_invest_pollination_U11.py
 
-5. Deactivate development environment
+4. Deactivate development environment
 
 .. code-block:: bash
 
