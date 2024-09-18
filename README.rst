@@ -14,6 +14,8 @@ Prerequisites
    git clone git@github.com:mlacayoemery/NCCS-InVEST.git
    cd NCCS-InVEST
 
+Alternatively, you can download and unzip the `repository <https://github.com/mlacayoemery/NCCS-InVEST/archive/refs/heads/main.zip>`_ manually into NCCS/NCCS-InVEST.
+
 2. Setup development environment
 
 .. code-block:: bash
