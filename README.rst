@@ -1,7 +1,11 @@
 NCCS
 ====
+
+Preferred
+---------
 Prerequisites
 
+*  Open network access for git, pip, and conda
 *  Install git and `register <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account>`_ a SSH key with GitHub
 *  Anaconda 
 
@@ -53,6 +57,9 @@ Alternatively, you can download and unzip the `repository <https://github.com/ml
 
    conda deactivate
 
+Alternative
+-----------
+Restore conda image...
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
