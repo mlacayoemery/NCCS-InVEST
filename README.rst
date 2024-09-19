@@ -30,7 +30,7 @@ Alternatively, you can download and unzip the `repository <https://github.com/ml
    python --version
    python -m pip --version
 
-   conda install -c conda-forge gdal "numpy<2"
+   conda install -c conda-forge git gdal "numpy<2"
    
    gdalinfo --version
 
@@ -59,7 +59,7 @@ Alternatively, you can download and unzip the `repository <https://github.com/ml
 
 Alternative
 -----------
-Restore conda image...
+Restore NCCS win-64 Anaconda image...
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
