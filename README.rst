@@ -24,15 +24,8 @@ Alternatively, you can download and unzip the `repository <https://github.com/ml
 
 .. code-block:: bash
 
-   conda create -n env-invest -c conda-forge "python=3.11"
+   conda create -n env-invest -c conda-forge "python=3.11" git gdal "numpy<2" libgcc gxx
    conda activate env-invest
-
-   python --version
-   python -m pip --version
-
-   conda install -c conda-forge git gdal "numpy<2" abseil-cpp gxx
-   
-   gdalinfo --version
 
    python -m pip install --upgrade pip setuptools wheel
    pip install -r requirements-dev.txt
