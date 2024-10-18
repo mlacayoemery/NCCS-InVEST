@@ -30,7 +30,7 @@ Alternatively, you can download and unzip the `repository <https://github.com/ml
    python --version
    python -m pip --version
 
-   conda install -c conda-forge git gdal "numpy<2" abseil-cpp
+   conda install -c conda-forge git gdal "numpy<2" abseil-cpp gxx
    
    gdalinfo --version
 
