@@ -19,12 +19,12 @@ logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 args = {
     'farm_vector_path': '', #os.path.join(base_path, 'pollination', 'farms.shp'),
-    'guild_table_path': os.path.join(base_path, 'pollination', 'guild_table.csv'),
-    'landcover_biophysical_table_path': os.path.join(base_path, 'pollination', 'landcover_biophysical_table.csv'),
-    'landcover_raster_path': os.path.join(base_path,'pollination', 'landcover.tif'),
+    'guild_table_path': os.path.join(base_path, 'data', 'sample', 'pollination', 'guild_table.csv'),
+    'landcover_biophysical_table_path': os.path.join(base_path, 'data', 'sample', 'pollination', 'landcover_biophysical_table.csv'),
+    'landcover_raster_path': os.path.join(base_path, 'data', 'sample', 'pollination', 'landcover.tif'),
     'results_suffix': '',
-    'workspace_dir': os.path.join(base_path, 'output'),
-    'pollinator_abundance_dir': os.path.join(base_path,'pollination', 'pollinator_abundance')
+    'workspace_dir': os.path.join(base_path, 'output', 'sample'),
+    'pollinator_abundance_dir': os.path.join(base_path,'data', 'sample', 'pollination', 'pollinator_abundance')
 }
 
 if __name__ == '__main__':
