@@ -501,7 +501,7 @@ def execute(args):
 
     Returns:
         None
-    """
+    """           
     # create initial working directories and determine file suffixes
     intermediate_output_dir = os.path.join(
         args['workspace_dir'], 'intermediate_outputs')
@@ -523,8 +523,32 @@ def execute(args):
     # and possibly a farm polygon.  This function will also raise an exception
     # if any of the inputs are malformed.
     scenario_variables = _parse_scenario_variables(args)
-    landcover_raster_info = pygeoprocessing.get_raster_info(
-        args['landcover_raster_path'])
+
+##NCCS-START##
+    #verify that all species have supplied species abundance rasters
+    guild_to_species_df = validation.get_validated_dataframe(
+        args['guild_table_path'],
+        **MODEL_SPEC['args']['guild_table_path'])
+    _SPECIES_ABUNDANCE_FILE_PATTERN = os.path.join("pollinator_abundance_%s.tif")
+    missing_species_abundance_list = []
+    scenario_variables['species_abundance_path']={}
+    for species_name in guild_to_species_df.index:
+        species_abundance_raster_path = os.path.join(
+            args['pollinator_abundance_dir'],
+            _SPECIES_ABUNDANCE_FILE_PATTERN % species_name.lower())
+        LOGGER.info("Checking for existing file %s" % species_abundance_raster_path)
+        if not os.path.exists(species_abundance_raster_path):
+            missing_species_abundance_list.append("%s" % species_name)
+        else:
+            scenario_variables['species_abundance_path'][species_name]=species_abundance_raster_path
+    if missing_species_abundance_list:
+        missing_species_abundance_list.sort()
+        raise ValueError(
+            "The following species names were provided in %s but no such "
+            "species abundance rasters exist in %s: %s" % (
+                args['guild_table_path'],
+                args['pollinator_abundance_dir'],
+                missing_species_abundance_list))
 
     try:
         n_workers = int(args['n_workers'])
@@ -536,6 +560,60 @@ def execute(args):
     task_graph = taskgraph.TaskGraph(
         os.path.join(args['workspace_dir'], 'taskgraph_cache'), n_workers)
 
+
+    #align_and_resize_raster_stack from annual water yield line 614
+    base_raster_path_list = [args['landcover_raster_path']]
+
+    lulc_root, lulc_ext = os.path.splitext(args['landcover_raster_path'])
+    aligned_landcover_raster_path = lulc_root+"_align"+lulc_ext
+    aligned_raster_path_list = [aligned_landcover_raster_path]
+    
+    for species_name in guild_to_species_df.index:
+        species_abundance_path = scenario_variables['species_abundance_path'][species_name]
+        sa_root, sa_ext = os.path.splitext(species_abundance_path)
+
+        base_raster_path_list.append(species_abundance_path)
+
+        aligned_species_abundance_path=sa_root+"_align"+sa_ext
+        aligned_raster_path_list.append(aligned_species_abundance_path)
+        scenario_variables['species_abundance_path'][species_name]=aligned_species_abundance_path
+
+        
+
+    target_pixel_size = pygeoprocessing.get_raster_info(
+        args['landcover_raster_path'])['pixel_size']
+    args['landcover_raster_path'] = aligned_landcover_raster_path
+    
+    align_raster_stack_task = task_graph.add_task(
+        pygeoprocessing.align_and_resize_raster_stack,
+        args=(base_raster_path_list, aligned_raster_path_list,
+              ['near'] * len(base_raster_path_list),
+              target_pixel_size, 'intersection'),
+        kwargs={'raster_align_index': 4},
+                #'base_vector_path_list': [watersheds_path]},
+        target_path_list=aligned_raster_path_list,
+        task_name='align_raster_stack')
+    # Joining now since this task will always be the root node
+    # and it's useful to have the raster info available.
+    align_raster_stack_task.join()
+    
+
+##NCCS-END##
+    
+    landcover_raster_info = pygeoprocessing.get_raster_info(
+        args['landcover_raster_path'])
+##NCCS-START##
+##    try:
+##        n_workers = int(args['n_workers'])
+##    except (KeyError, ValueError, TypeError):
+##        # KeyError when n_workers is not present in args
+##        # ValueError when n_workers is an empty string.
+##        # TypeError when n_workers is None.
+##        n_workers = -1  # Synchronous mode.
+##    task_graph = taskgraph.TaskGraph(
+##        os.path.join(args['workspace_dir'], 'taskgraph_cache'), n_workers)
+##NCCS-END##
+    
     if farm_vector_path is not None:
         # ensure farm vector is in the same projection as the landcover map
         reproject_farm_task = task_graph.add_task(
@@ -809,7 +887,10 @@ def execute(args):
             args=(
                 scenario_variables['habitat_nesting_index_path'][species],
                 floral_resources_index_path,
-                scenario_variables['species_abundance'][species],
+##NCCS-START##
+##                scenario_variables['species_abundance'][species],
+                scenario_variables['species_abundance_path'][species],                
+##NCCS-END##
                 pollinator_supply_index_path),
             dependent_task_list=[
                 floral_resources_task, habitat_nesting_tasks[species]],
@@ -841,29 +922,35 @@ def execute(args):
             foraged_flowers_index_path = (
                 scenario_variables['foraged_flowers_index_path'][
                     (species, season)])
-            pollinator_abundance_path = os.path.join(
-                output_dir, _POLLINATOR_ABUNDANCE_FILE_PATTERN % (
-                    species, season, file_suffix))
-            pollinator_abundance_task_map[(species, season)] = (
-                task_graph.add_task(
-                    task_name=f'calculate_poll_abudance_{species}',
-                    func=pygeoprocessing.raster_map,
-                    kwargs=dict(
-                        op=pollinator_supply_op,
-                        rasters=[
-                            foraged_flowers_index_path,
-                            floral_resources_index_path_map[species],
-                            convolve_ps_path],
-                        target_path=pollinator_abundance_path,
-                        target_nodata=_INDEX_NODATA),
-                    dependent_task_list=[
-                        foraged_flowers_index_task_map[(species, season)],
-                        floral_resources_index_task_map[species],
-                        convolve_ps_task],
-                    target_path_list=[pollinator_abundance_path]))
-            pollinator_abundance_path_map[(species, season)] = (
-                pollinator_abundance_path)
-
+##NCCS-START##
+##            pollinator_abundance_path = os.path.join(
+##                output_dir, _POLLINATOR_ABUNDANCE_FILE_PATTERN % (
+##                    species, season, file_suffix))
+##            pollinator_abundance_task_map[(species, season)] = (
+##                task_graph.add_task(
+##                    task_name=f'calculate_poll_abudance_{species}',
+##                    func=pygeoprocessing.raster_map,
+##                    kwargs=dict(
+##                        op=pollinator_supply_op,
+##                        rasters=[
+##                            foraged_flowers_index_path,
+##                            floral_resources_index_path_map[species],
+##                            convolve_ps_path],
+##                        target_path=pollinator_abundance_path,
+##                        target_nodata=_INDEX_NODATA),
+##                    dependent_task_list=[
+##                        foraged_flowers_index_task_map[(species, season)],
+##                        floral_resources_index_task_map[species],
+##                        convolve_ps_task],
+##                    target_path_list=[pollinator_abundance_path]))
+##            pollinator_abundance_path_map[(species, season)] = (
+##                pollinator_abundance_path)
+            pollinator_abundance_path_map[(species)] = (
+                os.path.join(
+                    args['pollinator_abundance_dir'],
+                    _SPECIES_ABUNDANCE_FILE_PATTERN % (species)))
+##NCCS-END##
+            
     # calculate total abundance of all pollinators for each season
     total_pollinator_abundance_task = {}
     for season in scenario_variables['season_list']:
@@ -873,7 +960,7 @@ def execute(args):
                 season, file_suffix))
 
         pollinator_abundance_season_path_band_list = [
-            (pollinator_abundance_path_map[(species, season)], 1)
+            (pollinator_abundance_path_map[(species)], 1)
             for species in scenario_variables['species_list']]
 
         total_pollinator_abundance_task[season] = task_graph.add_task(
@@ -883,9 +970,12 @@ def execute(args):
                 pollinator_abundance_season_path_band_list, _sum_arrays,
                 total_pollinator_abundance_index_path, gdal.GDT_Float32,
                 _INDEX_NODATA),
-            dependent_task_list=[
-                pollinator_abundance_task_map[(species, season)]
-                for species in scenario_variables['species_list']],
+##NCCS-START##
+##            dependent_task_list=[
+##                pollinator_abundance_task_map[(species, season)]
+##                for species in scenario_variables['species_list']],
+            dependent_task_list=[],
+##NCCS-END##            
             target_path_list=[total_pollinator_abundance_index_path])
 
     # next step is farm vector calculation, if no farms then okay to quit
@@ -1435,29 +1525,54 @@ def _multiply_by_scalar(raster_path, scalar, target_path):
         target_nodata=_INDEX_NODATA,
     )
 
-
+##NCCS-START##
+##def _calculate_pollinator_supply_index(
+##        habitat_nesting_suitability_path, floral_resources_path,
+##        species_abundance, target_path):
+##    """Calculate pollinator supply index..
+##
+##    Args:
+##        habitat_nesting_suitability_path (str): path to habitat nesting
+##            suitability raster
+##        floral_resources_path (str): path to floral resources raster
+##        species_abundance (float): species abundance value
+##        target_path (str): path to write out result raster
+##
+##    Returns:
+##        None.
+##    """
+##    pygeoprocessing.raster_map(
+##        op=lambda f_r, h_n: species_abundance * f_r * h_n,
+##        rasters=[habitat_nesting_suitability_path, floral_resources_path],
+##        target_path=target_path,
+##        target_nodata=_INDEX_NODATA
+##    )
+    
 def _calculate_pollinator_supply_index(
         habitat_nesting_suitability_path, floral_resources_path,
-        species_abundance, target_path):
+        species_abundance_path, target_path):
     """Calculate pollinator supply index..
 
     Args:
         habitat_nesting_suitability_path (str): path to habitat nesting
             suitability raster
         floral_resources_path (str): path to floral resources raster
-        species_abundance (float): species abundance value
+        species_abundance_path (str): path to species abundance raster
         target_path (str): path to write out result raster
 
     Returns:
         None.
     """
     pygeoprocessing.raster_map(
-        op=lambda f_r, h_n: species_abundance * f_r * h_n,
-        rasters=[habitat_nesting_suitability_path, floral_resources_path],
+        op=lambda f_r, h_n, s_a: f_r * h_n * s_a,
+        rasters=[habitat_nesting_suitability_path,
+                 floral_resources_path,
+                 species_abundance_path],
         target_path=target_path,
         target_nodata=_INDEX_NODATA
     )
 
+##NCCS-END##
 
 @validation.invest_validator
 def validate(args, limit_to=None):
