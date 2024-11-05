@@ -41,15 +41,8 @@ Pick the desired version and switch the branch. For example, the command for the
 
 .. code-block:: bash
 
-   conda create -n env-invest -c conda-forge "python=3.11"
+   conda create -n env-invest -c conda-forge "python=3.11" git gdal "numpy<2" abseil-cpp -y
    conda activate env-invest
-
-   python --version
-   python -m pip --version
-
-   conda install -c conda-forge git gdal "numpy<2" abseil-cpp
-   
-   gdalinfo --version
 
    python -m pip install --upgrade pip setuptools wheel
    pip install -r requirements-dev.txt
