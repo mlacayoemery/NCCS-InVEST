@@ -18,21 +18,31 @@ Prerequisites
    git clone git@github.com:mlacayoemery/NCCS-InVEST.git
    cd NCCS-InVEST
 
-Alternatively, you can download and unzip the `repository <https://github.com/mlacayoemery/NCCS-InVEST/archive/refs/heads/main.zip>`_ manually into NCCS/NCCS-InVEST.
+.. list-table:: Versions
+   :widths: 50 50
+   :header-rows: 1
+
+   * - Branch
+     - Description
+   * - natcap
+     - InVEST 3.14.2
+   * - v1
+     - 2024-09-19 NCCS-InVEST version 1
+   * - v2
+     - 2024-11 NCCS-InVEST version 2
+
+Pick the desired version and switch the branch. For example, the command for the v2 branch follows:
+
+.. code-block:: bash
+
+   git switch v2
 
 2. Setup development environment
 
 .. code-block:: bash
 
-   conda create -n env-invest -c conda-forge "python=3.11"
+   conda create -n env-invest -c conda-forge "python=3.11" git gdal "numpy<2" abseil-cpp -y
    conda activate env-invest
-
-   python --version
-   python -m pip --version
-
-   conda install -c conda-forge git gdal "numpy<2" abseil-cpp
-   
-   gdalinfo --version
 
    python -m pip install --upgrade pip setuptools wheel
    pip install -r requirements-dev.txt
