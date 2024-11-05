@@ -31,11 +31,11 @@ Prerequisites
    * - v2
      - 2024-11 NCCS-InVEST version 2
 
-Pick the desired version and checkout the branch. For example, the command for the v2 branch follows:
+Pick the desired version and switch the branch. For example, the command for the v2 branch follows:
 
 .. code-block:: bash
 
-   git checkout v2
+   git switch v2
 
 2. Setup development environment
 
