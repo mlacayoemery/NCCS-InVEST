@@ -18,7 +18,24 @@ Prerequisites
    git clone git@github.com:mlacayoemery/NCCS-InVEST.git
    cd NCCS-InVEST
 
-Alternatively, you can download and unzip the `repository <https://github.com/mlacayoemery/NCCS-InVEST/archive/refs/heads/main.zip>`_ manually into NCCS/NCCS-InVEST.
+.. list-table:: Versions
+   :widths: 50 50
+   :header-rows: 1
+
+   * - Branch
+     - Description
+   * - natcap
+     - InVEST 3.14.2
+   * - v1
+     - 2024-09-19 NCCS-InVEST version 1
+   * - v2
+     - 2024-11 NCCS-InVEST version 2
+
+Pick the desired version and checkout the branch. For example, the command for the v2 branch follows:
+
+.. code-block:: bash
+
+   git checkout v2
 
 2. Setup development environment
 
