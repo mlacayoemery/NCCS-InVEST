@@ -16,3 +16,4 @@ data/sample/output/
 data/sample/pollination/landcover.tif.aux.xml
 data/sample/pollination/pollinator_abundance/pollinator_abundance*
 output
+*_align.tif
