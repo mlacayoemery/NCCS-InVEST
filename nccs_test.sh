@@ -43,4 +43,6 @@ if ! conda env list | grep "v2" >/dev/null 2>&1; then
 
    git switch main
 fi
+#conda run -n v2 --live-stream pip list | grep natcap.invest
+#0.0.post66+g657fa0a
 #conda run -n v2 --live-stream python execute_invest_pollination.py output/env_v2
