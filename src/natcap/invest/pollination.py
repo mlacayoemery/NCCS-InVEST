@@ -960,7 +960,7 @@ def execute(args):
                 season, file_suffix))
 
         pollinator_abundance_season_path_band_list = [
-            (pollinator_abundance_path_map[(species)], 1)
+            (pollinator_abundance_path_map[(species, season)], 1)
             for species in scenario_variables['species_list']]
 
         total_pollinator_abundance_task[season] = task_graph.add_task(
