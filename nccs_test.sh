@@ -9,7 +9,7 @@ if ! conda env list | grep "natcap" >/dev/null 2>&1; then
 fi
 #conda run -n natcap --live-stream pip list | grep natcap.invest
 #3.14.2
-conda run -n natcap --live-stream python execute_invest_pollination.py output/env_natcap
+#conda run -n natcap --live-stream python execute_invest_pollination.py output/env_natcap
 
 mkdir -p data/sample/pollination/pollinator_abundance
 cp --update=none output/env_natcap/pollinator_abundance_apis_spring.tif data/sample/pollination/pollinator_abundance/pollinator_abundance_apis.tif
@@ -30,9 +30,9 @@ if ! conda env list | grep "v1" >/dev/null 2>&1; then
 fi
 #conda run -n v1 --live-stream pip list | grep natcap.invest
 #0.0.post54+g970cbbc.d20241109
-conda run -n v1 --live-stream python execute_invest_pollination.py output/env_v1
+#conda run -n v1 --live-stream python execute_invest_pollination.py output/env_v1
 
-#conda env remove -n v2 -y
+conda env remove -n v2 -y
 if ! conda env list | grep "v2" >/dev/null 2>&1; then
    git checkout v2
    
