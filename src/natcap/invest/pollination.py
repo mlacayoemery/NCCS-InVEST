@@ -923,32 +923,32 @@ def execute(args):
                 scenario_variables['foraged_flowers_index_path'][
                     (species, season)])
 ##NCCS-START##
-##            pollinator_abundance_path = os.path.join(
-##                output_dir, _POLLINATOR_ABUNDANCE_FILE_PATTERN % (
-##                    species, season, file_suffix))
-##            pollinator_abundance_task_map[(species, season)] = (
-##                task_graph.add_task(
-##                    task_name=f'calculate_poll_abudance_{species}',
-##                    func=pygeoprocessing.raster_map,
-##                    kwargs=dict(
-##                        op=pollinator_supply_op,
-##                        rasters=[
-##                            foraged_flowers_index_path,
-##                            floral_resources_index_path_map[species],
-##                            convolve_ps_path],
-##                        target_path=pollinator_abundance_path,
-##                        target_nodata=_INDEX_NODATA),
-##                    dependent_task_list=[
-##                        foraged_flowers_index_task_map[(species, season)],
-##                        floral_resources_index_task_map[species],
-##                        convolve_ps_task],
-##                    target_path_list=[pollinator_abundance_path]))
-##            pollinator_abundance_path_map[(species, season)] = (
-##                pollinator_abundance_path)
-            pollinator_abundance_path_map[(species)] = (
-                os.path.join(
-                    args['pollinator_abundance_dir'],
-                    _SPECIES_ABUNDANCE_FILE_PATTERN % (species)))
+            pollinator_abundance_path = os.path.join(
+                output_dir, _POLLINATOR_ABUNDANCE_FILE_PATTERN % (
+                    species, season, file_suffix))
+            pollinator_abundance_task_map[(species, season)] = (
+                task_graph.add_task(
+                    task_name=f'calculate_poll_abudance_{species}',
+                    func=pygeoprocessing.raster_map,
+                    kwargs=dict(
+                        op=pollinator_supply_op,
+                        rasters=[
+                            foraged_flowers_index_path,
+                            floral_resources_index_path_map[species],
+                            convolve_ps_path],
+                        target_path=pollinator_abundance_path,
+                        target_nodata=_INDEX_NODATA),
+                    dependent_task_list=[
+                        foraged_flowers_index_task_map[(species, season)],
+                        floral_resources_index_task_map[species],
+                        convolve_ps_task],
+                    target_path_list=[pollinator_abundance_path]))
+            pollinator_abundance_path_map[(species, season)] = (
+                pollinator_abundance_path)
+##            pollinator_abundance_path_map[(species)] = (
+##                os.path.join(
+##                    args['pollinator_abundance_dir'],
+##                    _SPECIES_ABUNDANCE_FILE_PATTERN % (species)))
 ##NCCS-END##
             
     # calculate total abundance of all pollinators for each season
