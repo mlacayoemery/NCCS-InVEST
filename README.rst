@@ -17,29 +17,29 @@ Prerequisites
    cd NCCS
    git clone git@github.com:mlacayoemery/NCCS-InVEST.git
    cd NCCS-InVEST
+.. 
+  .. list-table:: Versions
+     :widths: 30 30 30
+     :header-rows: 1
 
-.. list-table:: Versions
-   :widths: 30 30 30
-   :header-rows: 1
+     * - Branch
+       - Description
+       - Version Number
+     * - natcap
+       - InVEST 3.14.2
+       - 3.14.2
+     * - v1
+       - 2024-09-19 NCCS-InVEST version 1
+       - 0.0.post54+g970cbbc.d20241109
+     * - v2
+       - 2024-11 NCCS-InVEST version 2
+       - 0.0.post67+g5c89905
 
-   * - Branch
-     - Description
-     - Version Number
-   * - natcap
-     - InVEST 3.14.2
-     - 3.14.2
-   * - v1
-     - 2024-09-19 NCCS-InVEST version 1
-     - 0.0.post54+g970cbbc.d20241109
-   * - v2
-     - 2024-11 NCCS-InVEST version 2
-     - 0.0.post67+g5c89905
+  Switch to the desired **branch**. For example, the command for the v2 branch is as follows:
 
-Switch to the desired **branch**. For example, the command for the v2 branch is as follows:
+  .. code-block:: bash
 
-.. code-block:: bash
-
-   git switch v2
+     git switch v2
 
 2. Setup development environment
 
