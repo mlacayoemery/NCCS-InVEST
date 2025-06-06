@@ -19,19 +19,23 @@ Prerequisites
    cd NCCS-InVEST
 
 .. list-table:: Versions
-   :widths: 50 50
+   :widths: 30 30 30
    :header-rows: 1
 
    * - Branch
      - Description
+     - Version Number
    * - natcap
      - InVEST 3.14.2
+     - 3.14.2
    * - v1
      - 2024-09-19 NCCS-InVEST version 1
+     - 0.0.post54+g970cbbc.d20241109
    * - v2
      - 2024-11 NCCS-InVEST version 2
+     - 0.0.post67+g5c89905
 
-Pick the desired version and switch the branch. For example, the command for the v2 branch follows:
+Switch to the desired **branch**. For example, the command for the v2 branch is as follows:
 
 .. code-block:: bash
 
@@ -42,34 +46,22 @@ Pick the desired version and switch the branch. For example, the command for the
 .. code-block:: bash
 
    conda create -n env-invest -c conda-forge "python=3.11" git gdal "numpy<2" abseil-cpp -y
-   conda activate env-invest
-
-   python -m pip install --upgrade pip setuptools wheel
-   pip install -r requirements-dev.txt
-   pip install .
-
-   invest list
-   invest run --help
+   conda run -n env-invest --live-stream python -m pip install --upgrade pip setuptools wheel
+   conda run -n env-invest --live-stream pip install -r requirements-dev.txt
+   conda run -n env-invest --live-stream pip install .
+   conda run -n env-invest --live-stream invest list
+   conda run -n env-invest --live-stream invest run --help
 
 3. Run test script
 
-   Note: Species abundance rasters must be in named as **pollinator_abundance_[species].tif**. See pre-formatted `NCCS NMDS data <https://drive.google.com/drive/folders/1B-_RKdOOSH9wDz52FIr8-VvgYkySJ3Id>`_.
+   Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**.
 
-   *  Copy data into NCCS/sample
-
-.. code-block:: bash
-
-   python NCCS_invest_pollination_U11.py
-
-4. Deactivate development environment
 
 .. code-block:: bash
 
-   conda deactivate
+   conda run -n env-invest --live-stream python execute_invest_pollination.py
 
-Alternative
------------
-Restore NCCS win-64 Anaconda image...
+Results will be in the NCCS/NCCS-InVEST/output folder.
 
 InVEST: Integrated Valuation of Ecosystem Services and Tradeoffs
 ================================================================
