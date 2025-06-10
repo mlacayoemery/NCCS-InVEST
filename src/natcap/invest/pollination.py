@@ -567,6 +567,7 @@ def execute(args):
     lulc_root, lulc_ext = os.path.splitext(args['landcover_raster_path'])
     aligned_landcover_raster_path = lulc_root+"_align"+lulc_ext
     aligned_raster_path_list = [aligned_landcover_raster_path]
+    normalized_raster_path_dict = {}
     
     for species_name in guild_to_species_df.index:
         species_abundance_path = scenario_variables['species_abundance_path'][species_name]
@@ -575,8 +576,11 @@ def execute(args):
         base_raster_path_list.append(species_abundance_path)
 
         aligned_species_abundance_path=sa_root+"_align"+sa_ext
+        normalized_species_abundance_path=sa_root+"_norm"+sa_ext
         aligned_raster_path_list.append(aligned_species_abundance_path)
-        scenario_variables['species_abundance_path'][species_name]=aligned_species_abundance_path
+        normalized_raster_path_dict[species_name]=(aligned_species_abundance_path,
+                                                   normalized_species_abundance_path)
+        scenario_variables['species_abundance_path'][species_name]=normalized_species_abundance_path
 
         
 
@@ -596,7 +600,25 @@ def execute(args):
     # Joining now since this task will always be the root node
     # and it's useful to have the raster info available.
     align_raster_stack_task.join()
-    
+
+    def normalize_op(r):
+        return r / 347.49
+
+    normalize_task_map = {}
+    for species_name in guild_to_species_df.index:
+        source, destination = normalized_raster_path_dict[species_name]
+        normalize_task_map[(species_name)] = (
+            task_graph.add_task(
+                task_name=f'normalize_abudance_{species_name}',
+                func=pygeoprocessing.raster_map,
+                kwargs=dict(
+                    op=normalize_op,
+                    rasters=[source],
+                    target_path=destination,
+                    target_nodata=_INDEX_NODATA),
+                dependent_task_list=[align_raster_stack_task ],
+                target_path_list=[destination]))
+        normalize_task_map[(species_name)]
 
 ##NCCS-END##
     
@@ -893,7 +915,9 @@ def execute(args):
 ##NCCS-END##
                 pollinator_supply_index_path),
             dependent_task_list=[
-                floral_resources_task, habitat_nesting_tasks[species]],
+                normalize_task_map[(species)],
+                floral_resources_task,
+                habitat_nesting_tasks[species]],
             target_path_list=[pollinator_supply_index_path])
 
         # calc convolved_PS PS over alpha_s
