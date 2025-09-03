@@ -601,8 +601,12 @@ def execute(args):
     # and it's useful to have the raster info available.
     align_raster_stack_task.join()
 
+    #sum_relative_abundance=347.49
+    sum_relative_abundance=guild_to_species_df['relative_abundance'].sum()
+    LOGGER.info('Normalizing abundance by '
+                f'{sum_relative_abundance}')
     def normalize_op(r):
-        return r / 347.49
+        return r / sum_relative_abundance
 
     normalize_task_map = {}
     for species_name in guild_to_species_df.index:
