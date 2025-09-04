@@ -618,8 +618,7 @@ def execute(args):
                 kwargs=dict(
                     op=normalize_op,
                     rasters=[source],
-                    target_path=destination,
-                    target_nodata=_INDEX_NODATA),
+                    target_path=destination),
                 dependent_task_list=[align_raster_stack_task ],
                 target_path_list=[destination]))
         normalize_task_map[(species_name)]
