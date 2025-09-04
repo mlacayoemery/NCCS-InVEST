@@ -59,7 +59,7 @@ Prerequisites
 
 .. code-block:: bash
 
-   conda run -n env-invest --live-stream python execute_invest_pollination.py
+   conda run -n env-invest --live-stream python NCCS_invest_pollination_2025.py
 
 Results will be in the NCCS/NCCS-InVEST/output folder.
 
