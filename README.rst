@@ -3,7 +3,7 @@ NCCS
 Changes
 -------
 * See all changes from InVEST 3.14.2 `here <https://github.com/mlacayoemery/NCCS-InVEST/compare/ebf92a3dbe70f3dc8e800cd48d2363e2bb62d403...main>`_
-* In principle, the only model changes are in `pollination.py <https://github.com/mlacayoemery/NCCS-InVEST/blob/main/src/natcap/invest/pollination.py>`_
+* In principle, the only model changes are in `pollination.py <https://github.com/mlacayoemery/NCCS-InVEST/commits/main/src/natcap/invest/pollination.py>`_
 
 Preferred
 ---------
