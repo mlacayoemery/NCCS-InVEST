@@ -606,7 +606,7 @@ def execute(args):
     LOGGER.info('Normalizing abundance by '
                 f'{sum_relative_abundance}')
     def normalize_op(r):
-        return r / sum_relative_abundance
+        return r / float(sum_relative_abundance)
 
     normalize_task_map = {}
     for species_name in guild_to_species_df.index:
