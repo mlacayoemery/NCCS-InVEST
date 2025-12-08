@@ -618,7 +618,8 @@ def execute(args):
                 kwargs=dict(
                     op=normalize_op,
                     rasters=[source],
-                    target_path=destination),
+                    target_path=destination,
+                    target_dtype=gdal.GDT_Float32),
                 dependent_task_list=[align_raster_stack_task ],
                 target_path_list=[destination]))
         normalize_task_map[(species_name)]
