@@ -2,7 +2,7 @@ NCCS
 ====
 Changes
 -------
-* See all changes from InVEST 3.14.2 `here <https://github.com/mlacayoemery/NCCS-InVEST/compare/ebf92a3dbe70f3dc8e800cd48d2363e2bb62d403...205bf79b1cd42c1d0d18d3565b6ef277710f8cdb#diff-ab5236edcab36e4d625902b2e728fe9d4e8bbe33536289ae72f01a32f0782afd>`_
+* See all changes from InVEST 3.14.2 `here <https://github.com/mlacayoemery/NCCS-InVEST/compare/ebf92a3dbe70f3dc8e800cd48d2363e2bb62d403...main>`_
 * In principle, the only model changes are in `pollination.py <https://github.com/mlacayoemery/NCCS-InVEST/blob/main/src/natcap/invest/pollination.py>`_
 
 Preferred
