@@ -602,12 +602,29 @@ def execute(args):
     align_raster_stack_task.join()
 
     #sum_relative_abundance=347.49
-    sum_relative_abundance=guild_to_species_df['relative_abundance'].sum()
-    LOGGER.info('Normalizing abundance by '
-                f'{sum_relative_abundance}')
-    def normalize_op(r):
-        return r / float(sum_relative_abundance)
+    ##BAE Start##
+    #sum_relative_abundance=guild_to_species_df['relative_abundance'].sum()
+    
+    sum_species_abundance_index_path = os.path.join(intermediate_output_dir, 
+    "sum_species_abundance.tif")
 
+    sum_species_abundance_task= task_graph.add_task(
+        task_name=f'sum_species_abudnce',
+        func=pygeoprocessing.raster_calculator,
+        args=(
+            align_raster_stack_task, _sum_arrays,
+            sum_species_abundance_index_path, gdal.GDT_Float32,
+            _INDEX_NODATA),
+    
+    ##BAE End##
+    LOGGER.info('Normalizing abundance by Sum Species Abundance raster')
+                
+    def normalize_op(r):
+        ##BAE Start##
+        #return r / float(sum_relative_abundance)
+        return r / sum_species_abundance_index_path
+        ##BAE End##
+    
     normalize_task_map = {}
     for species_name in guild_to_species_df.index:
         source, destination = normalized_raster_path_dict[species_name]
