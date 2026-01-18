@@ -567,6 +567,7 @@ def execute(args):
     lulc_root, lulc_ext = os.path.splitext(args['landcover_raster_path'])
     aligned_landcover_raster_path = lulc_root+"_align"+lulc_ext
     aligned_raster_path_list = [aligned_landcover_raster_path]
+    aligned_sp_path_list = []
     normalized_raster_path_dict = {}
     
     for species_name in guild_to_species_df.index:
@@ -578,11 +579,10 @@ def execute(args):
         aligned_species_abundance_path=sa_root+"_align"+sa_ext
         normalized_species_abundance_path=sa_root+"_norm"+sa_ext
         aligned_raster_path_list.append(aligned_species_abundance_path)
+        aligned_sp_path_list.append([aligned_species_abundance_path, 1])
         normalized_raster_path_dict[species_name]=(aligned_species_abundance_path,
                                                    normalized_species_abundance_path)
         scenario_variables['species_abundance_path'][species_name]=normalized_species_abundance_path
-
-        
 
     target_pixel_size = pygeoprocessing.get_raster_info(
         args['landcover_raster_path'])['pixel_size']
@@ -601,28 +601,20 @@ def execute(args):
     # and it's useful to have the raster info available.
     align_raster_stack_task.join()
 
-    #sum_relative_abundance=347.49
-    ##BAE Start##
-    #sum_relative_abundance=guild_to_species_df['relative_abundance'].sum()
-    
-    sum_species_abundance_index_path = os.path.join(intermediate_output_dir, 
-    "sum_species_abundance.tif")
-
-    sum_species_abundance_task= task_graph.add_task(
-        task_name=f'sum_species_abudnce',
-        func=pygeoprocessing.raster_calculator,
-        args=(
-            align_raster_stack_task, _sum_arrays,
-            sum_species_abundance_index_path, gdal.GDT_Float32,
-            _INDEX_NODATA),
-    
-    ##BAE End##
+    ##BAE Start##    
     LOGGER.info('Normalizing abundance by Sum Species Abundance raster')
-                
-    def normalize_op(r):
+    sum_species_abundance_index_path = os.path.join(intermediate_output_dir, "sum_species_abundance.tif")
+    
+    pygeoprocessing.raster_calculator(
+            aligned_sp_path_list, _sum_arrays,
+            sum_species_abundance_index_path, gdal.GDT_Float32,
+            _INDEX_NODATA)   
+    ##BAE End##
+ 
+    def normalize_op(r, s):
         ##BAE Start##
         #return r / float(sum_relative_abundance)
-        return r / sum_species_abundance_index_path
+        return r / s
         ##BAE End##
     
     normalize_task_map = {}
@@ -634,7 +626,7 @@ def execute(args):
                 func=pygeoprocessing.raster_map,
                 kwargs=dict(
                     op=normalize_op,
-                    rasters=[source],
+                    rasters=[source, sum_species_abundance_index_path],
                     target_path=destination,
                     target_dtype=numpy.float32),
                 dependent_task_list=[align_raster_stack_task ],
@@ -1464,13 +1456,15 @@ def _parse_scenario_variables(args):
     for species in result['species_list']:
         result['alpha_value'][species] = guild_df[_ALPHA_HEADER][species]
 
-    # * species_abundance[species] (string->float)
-    total_relative_abundance = guild_df[_RELATIVE_SPECIES_ABUNDANCE_FIELD].sum()
-    result['species_abundance'] = {}
-    for species in result['species_list']:
-        result['species_abundance'][species] = (
-            guild_df[_RELATIVE_SPECIES_ABUNDANCE_FIELD][species] /
-            total_relative_abundance)
+    ##BAE Start## Comment out this sumamry since it is spatially explicit
+    # # * species_abundance[species] (string->float)
+    # total_relative_abundance = guild_df[_RELATIVE_SPECIES_ABUNDANCE_FIELD].sum()
+    # result['species_abundance'] = {}
+    # for species in result['species_list']:
+        # result['species_abundance'][species] = (
+            # guild_df[_RELATIVE_SPECIES_ABUNDANCE_FIELD][species] /
+            # total_relative_abundance)
+    ##BAE End##
 
     # map the relative foraging activity of a species during a certain season
     # (species, season)
