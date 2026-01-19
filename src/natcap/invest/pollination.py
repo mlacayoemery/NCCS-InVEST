@@ -74,12 +74,15 @@ MODEL_SPEC = {
                     "about": gettext(
                         "Average distance that this species or guild travels "
                         "to forage on flowers.")
-                },
-                "relative_abundance": {
-                    "type": "ratio",
-                    "about": gettext(
-                        "The proportion of total pollinator abundance that "
-                        "consists of this species/guild.")
+                ##BAE-START##
+                #Suppress the relative eabundance field requirement
+                #},
+                #"relative_abundance": {
+                #    "type": "ratio",
+                #    "about": gettext(
+                #        "The proportion of total pollinator abundance that "
+                #        "consists of this species/guild.")
+                ##BAE-END####
                 }
             },
             "about": gettext(
@@ -334,9 +337,15 @@ _FORAGING_ACTIVITY_PATTERN = 'foraging_activity_%s_index'
 _FORAGING_ACTIVITY_RE_PATTERN = _FORAGING_ACTIVITY_PATTERN % '([^_]+)'
 _RELATIVE_SPECIES_ABUNDANCE_FIELD = 'relative_abundance'
 _ALPHA_HEADER = 'alpha'
+##BAE-START##
+#_EXPECTED_GUILD_HEADERS = [
+#    _NESTING_SUITABILITY_PATTERN, _FORAGING_ACTIVITY_RE_PATTERN,
+#    _ALPHA_HEADER, _RELATIVE_SPECIES_ABUNDANCE_FIELD]
 _EXPECTED_GUILD_HEADERS = [
     _NESTING_SUITABILITY_PATTERN, _FORAGING_ACTIVITY_RE_PATTERN,
-    _ALPHA_HEADER, _RELATIVE_SPECIES_ABUNDANCE_FIELD]
+    _ALPHA_HEADER]    
+##BAE-END##
+
 
 _NESTING_SUBSTRATE_INDEX_FILEPATTERN = 'nesting_substrate_index_%s%s.tif'
 # this is used if there is a farm polygon present
