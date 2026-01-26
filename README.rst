@@ -38,12 +38,13 @@ Prerequisites
      * - v2
        - 2024-11 NCCS-InVEST version 2
        - 0.0.post67+g5c89905
-
-  Switch to the desired **branch**. For example, the command for the v2 branch is as follows:
+  .. 
+  
+  Switch to the desired **branch**. For example, the command for the v3.2 branch is as follows:
 
   .. code-block:: bash
 
-     git switch v2
+     git switch v3.2
   .. 
   
 2a. If it is first time downloading the envrionment, setup development environment
