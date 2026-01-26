@@ -87,7 +87,8 @@ And then update the conda environment and natcap.invest package
    conda run -n env-invest --live-stream python NCCS_invest_pollination_2025.py
 .. 
   
-*****The NCCS_invest_pollination_2025.py only passes the arguments (i.e. pathways to the datasets) to the source code of the modified InVEST model. 
+.. note::
+The NCCS_invest_pollination_2025.py only passes the arguments (i.e. pathways to the datasets) to the source code of the modified InVEST model. 
 
 If you want to add different guild tables, you could modify the pathway in  NCCS_invest_pollination_2025.py to indicate the new pathway - 
 'guild_table_path': os.path.join(base_path, 'InVEST_2025_apple_pesenc', '<NEW TABLE NAME>.csv').
