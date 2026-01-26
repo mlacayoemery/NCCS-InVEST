@@ -39,7 +39,7 @@ Prerequisites
        - 2024-11 NCCS-InVEST version 2
        - 0.0.post67+g5c89905
   .. 
-  
+ 
   Switch to the desired **branch**. For example, the command for the v3.2 branch is as follows:
 
   .. code-block:: bash
@@ -47,7 +47,7 @@ Prerequisites
      git switch v3.2
   .. 
   
-2a. If it is first time downloading the envrionment, setup development environment
+2a. If it is the first time downloading the envrionment, setup development environment
 
 .. code-block:: bash
 
@@ -88,6 +88,7 @@ And then update the conda environment and natcap.invest package
 .. 
   
 4. The NCCS_invest_pollination_2025.py only passes the arguments (i.e. pathways to the datasets) to the source code of the modified InVEST model. 
+
 If you want to add different guild tables, you could modify the pathway in  NCCS_invest_pollination_2025.py to indicate the new pathway - 
 'guild_table_path': os.path.join(base_path, 'InVEST_2025_apple_pesenc', '<NEW TABLE NAME>.csv').
 
