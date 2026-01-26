@@ -45,7 +45,7 @@ Prerequisites
 
      git switch v2
 
-2. Setup development environment
+2a. If it is first time downloading the envrionment, setup development environment
 
 .. code-block:: bash
 
@@ -56,6 +56,19 @@ Prerequisites
    conda run -n env-invest --live-stream invest list
    conda run -n env-invest --live-stream invest run --help
 
+2b. If development environment is already setup, you can update by pulling from the main branch on the repository
+.. code-block:: bash
+
+   cd NCCS-InVEST
+   git fetch origin
+   git checkout main
+   git pull origin main
+
+And then update the conda environment and natcap.invest package
+.. code-block:: bash
+   conda run -n env-invest --live-stream pip install --upgrade .
+
+
 3. Run test script
 
    Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**.
@@ -65,6 +78,9 @@ Prerequisites
 
    conda run -n env-invest --live-stream invest --version
    conda run -n env-invest --live-stream python NCCS_invest_pollination_2025.py
+   
+4. The NCCS_invest_pollination_2025.py only passes the arguments (i.e. pathways to the datasets) to the source code of the modified InVEST model. If you want to add different guild tables, you could modify the pathway in  NCCS_invest_pollination_2025.py to indicate the new pathway - 
+'guild_table_path': os.path.join(base_path, 'InVEST_2025_apple_pesenc', '<NEW TABLE NAME>.csv').
 
 Results will be in the NCCS/NCCS-InVEST/output folder.
 
