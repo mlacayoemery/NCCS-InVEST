@@ -68,10 +68,10 @@ Prerequisites
    git fetch origin
    git checkout main
    git pull origin main
-   git pull origin main
 .. 
 
 And then update the conda environment and natcap.invest package
+
 .. code-block:: bash
 
    conda run -n env-invest --live-stream pip install --upgrade .
@@ -80,7 +80,6 @@ And then update the conda environment and natcap.invest package
 3. Run test script
 
    Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**.
-
 
 .. code-block:: bash
 
