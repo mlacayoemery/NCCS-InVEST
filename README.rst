@@ -80,7 +80,7 @@ And then update the conda environment and natcap.invest package
 3. Run test script
 
    Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**. 
-   The LULC raster is contained in a zip file and will need to be extarcted.
+   The LULC raster is contained in a zip file and will need to be extracted.
    Please kindly extract/unzip the LULC zip file into the same directory 
 
 .. code-block:: bash
