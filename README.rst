@@ -64,7 +64,7 @@ Prerequisites
 
 .. code-block:: bash
 
-   cd NCCS-InVEST
+   cd NCCS/NCCS-InVEST
    git fetch origin
    git checkout main
    git pull origin main
@@ -79,7 +79,9 @@ And then update the conda environment and natcap.invest package
 
 3. Run test script
 
-   Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**.
+   Note: Input data should be in NCCS/NCCS-InVEST/input folder. Species abundance rasters must be in named as **pollinator_abundance_[species].tif**. 
+   The LULC raster is contained in a zip file and will need to be extarcted.
+   Please kindly extract/unzip the LULC zip file into the same directory 
 
 .. code-block:: bash
 
