@@ -612,18 +612,25 @@ def execute(args):
 
     ##BAE Start##    
     LOGGER.info('Aggregating to Sum Species Abundance raster')
+    pre_sum_species_abundance_index_path = os.path.join(intermediate_output_dir, "uncorrected_spec_abun.tif")
     sum_species_abundance_index_path = os.path.join(intermediate_output_dir, "sum_species_abundance.tif")
     
     pygeoprocessing.raster_calculator(
             aligned_sp_path_list, _sum_arrays,
-            sum_species_abundance_index_path, gdal.GDT_Float32,
+            pre_sum_species_abundance_index_path, gdal.GDT_Float32,
             _INDEX_NODATA)   
-       
+    
+    def zero_conditional_op(sum_band):
+        # If a_band = 0, return 0.01, else return values
+        return numpy.where(sum_band == 0, 0.01, sum_band)
+
     LOGGER.info('Correcting Zeros in Sum Species Abundance raster')
     pygeoprocessing.raster_calculator(
-        [(sum_species_abundance_index_path, 1)],
-        lambda arr: np.where(arr = 0, 1, 0), 
-        sum_species_abundance_index_path, numpy.float32, _INDEX_NODATA) 
+        [(pre_sum_species_abundance_index_path, 1)],
+        zero_conditional_op,
+        sum_species_abundance_index_path, 
+        gdal.GDT_Float32,
+        _INDEX_NODATA) 
         
     LOGGER.info('Normalizing abundance by Sum Species Abundance raster')
     ##BAE End##     
