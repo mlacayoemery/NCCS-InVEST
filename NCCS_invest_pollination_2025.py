@@ -19,12 +19,12 @@ logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 args = {
     'farm_vector_path': '',
-    'guild_table_path': os.path.join(base_path, 'InVEST_2025_apple_pesenc', 'guild_CH_presence_apple.csv'),
-    'landcover_biophysical_table_path': os.path.join(base_path, 'InVEST_2025_apple_pesenc', 'pollination_bptable_ds25.csv'),
-    'landcover_raster_path': os.path.join(base_path,'InVEST_2025_apple_pesenc', 'LU-CH_2018all.tif'),
+    'guild_table_path': os.path.join(base_path, 'InVEST_2026_apple_present', 'guild_CH_present_apple.csv'),
+    'landcover_biophysical_table_path': os.path.join(base_path, 'InVEST_2026_apple_present', 'pollination_bptable_ds25.csv'),
+    'landcover_raster_path': os.path.join(base_path,'InVEST_2026_apple_present', 'LU-CH_2018all.tif'),
     'results_suffix': '',
     'workspace_dir': os.path.join(base_path, 'output'),
-    'pollinator_abundance_dir': os.path.join(base_path,'InVEST_2025_apple_pesenc', 'pollinator_abundance')
+    'pollinator_abundance_dir': os.path.join(base_path,'InVEST_2026_apple_present', 'pollinator_abundance')
 }
 
 if __name__ == '__main__':
