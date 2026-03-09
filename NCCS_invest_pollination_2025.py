@@ -35,4 +35,3 @@ args = {
 }
 if __name__ == '__main__':
     natcap.invest.pollination.execute(args)
-rgs)
