@@ -570,7 +570,7 @@ def execute(args):
         os.path.join(args['workspace_dir'], 'taskgraph_cache'), n_workers)
 
 
-    #align_and_resize_raster_stack from annual water yield line 614
+    #align_and_resize_raster_stack from lulc
     base_raster_path_list = [args['landcover_raster_path']]
 
     lulc_root, lulc_ext = os.path.splitext(args['landcover_raster_path'])
@@ -595,14 +595,18 @@ def execute(args):
 
     target_pixel_size = pygeoprocessing.get_raster_info(
         args['landcover_raster_path'])['pixel_size']
+    
+    target_bb = pygeoprocessing.get_raster_info(
+        args['landcover_raster_path'])['bounding_box']
+    
     args['landcover_raster_path'] = aligned_landcover_raster_path
     
     align_raster_stack_task = task_graph.add_task(
         pygeoprocessing.align_and_resize_raster_stack,
         args=(base_raster_path_list, aligned_raster_path_list,
               ['near'] * len(base_raster_path_list),
-              target_pixel_size, 'intersection'),
-        kwargs={'raster_align_index': 4},
+              target_pixel_size, target_bb),
+        kwargs={'raster_align_index': 0},
                 #'base_vector_path_list': [watersheds_path]},
         target_path_list=aligned_raster_path_list,
         task_name='align_raster_stack')
